@@ -58,6 +58,9 @@ public class Cuenta {
 	public LinkedList<Movimiento> getMovimientos() {
 		return movimientos;
 	}
+	public LinkedList<Tarjeta> getTarjetas() {
+		return tarjetas;
+	}
 
 	private void setNroDeCuenta(String nroDeCuenta) {
 		this.nroDeCuenta = nroDeCuenta;
