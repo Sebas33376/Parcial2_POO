@@ -7,6 +7,7 @@ public class Cuenta {
 	private String nroDeCuenta;
 	private String cbu;
 	private TipoDeCuenta tipoDeCuenta;
+	private LinkedList<Tarjeta> tarjetas;
 	private double saldo;
 	private int pinCajero;
 	private LinkedList<Movimiento> movimientos;
@@ -20,12 +21,19 @@ public class Cuenta {
 		setNroDeCuenta(nroDeCuenta);
 		setCbu(cbu);
 		setTipoDeCuenta(tipoDeCuenta);
+		this.tarjetas = new LinkedList<Tarjeta>();
 		setSaldo(saldo);
 		setPinCajero(pinCajero);
 		this.movimientos = new LinkedList<Movimiento>();
 	}
 	
-	public void AgregarTarjeta() {};
+	public void SolicitarTarjetaDebito() {
+		
+	};
+	
+	public void SolicitarTarjetaCredito() {
+		
+	};
 
 	public String getNroDeCuenta() {
 		return nroDeCuenta;

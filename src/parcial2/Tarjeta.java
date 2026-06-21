@@ -2,7 +2,7 @@ package parcial2;
 
 import java.time.LocalDate;
 
-public class TarjetaDebito {
+public abstract class Tarjeta{
 	private String titular;
 	private String numTarjeta;
 	private String codSeguridad;
@@ -10,16 +10,19 @@ public class TarjetaDebito {
 	private LocalDate fechaImpresion;
 	private LocalDate fechaVencimiento;
 	
-	public TarjetaDebito(String titular, String numTarjeta, String codSeguridad, boolean estaActiva,
-			LocalDate fechaImpresion, LocalDate fechaVencimiento) {
+	public Tarjeta(String titular, String numTarjeta, String codSeguridad, LocalDate fechaImpresion, LocalDate fechaVencimiento) {
 
 		setTitular(titular);
 		setNumTarjeta(numTarjeta);
 		setCodSeguridad(codSeguridad);
-		setEstaActiva(estaActiva);
+		setEstaActiva(true);
 		setFechaImpresion(fechaImpresion);
 		setFechaVencimiento(fechaVencimiento);
 	}
+	
+	public abstract void Pagar(double monto, Cuenta cuenta);
+	
+	public abstract void Transferir(double monto, Cuenta cuenta);
 
 	public String getTitular() {
 		return titular;
