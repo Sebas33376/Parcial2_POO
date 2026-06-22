@@ -35,7 +35,7 @@ public class Main {
 				} while (flag);
 				break;
 			case 1:
-                   Usuario usuario = new Usuario();
+                   Cliente usuario = new Cliente();
                    Usuario.AgregarUsuario(usuario);
                    JOptionPane.showMessageDialog(null,usuario);
 				break;

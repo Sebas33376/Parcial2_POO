@@ -5,8 +5,9 @@ import java.util.LinkedList;
 import javax.swing.JOptionPane;
 
 public class Cuenta {
-
-	private String nroDeCuenta;
+    private static int numero = 1;
+    private static LinkedList<String> listaCbus = new LinkedList<String>(); 
+	private int nroDeCuenta;
 	private String cbu;
 	private TipoDeCuenta tipoDeCuenta;
 	private LinkedList<Tarjeta> tarjetas;
@@ -17,12 +18,13 @@ public class Cuenta {
 	public Cuenta() {
 	}
 
-	public Cuenta(String nroDeCuenta, String cbu, TipoDeCuenta tipoDeCuenta, double saldo, int pinCajero) {
-		setNroDeCuenta(nroDeCuenta);
-		setCbu(cbu);
+	public Cuenta(TipoDeCuenta tipoDeCuenta, int pinCajero) {
+		setNroDeCuenta(numero);
+		numero++;
+		setCbu(GenerarCbu());
 		setTipoDeCuenta(tipoDeCuenta);
 		this.tarjetas = new LinkedList<Tarjeta>();
-		setSaldo(saldo);
+		setSaldo(0);
 		setPinCajero(pinCajero);
 		this.movimientos = new LinkedList<Movimiento>();
 	}
@@ -37,6 +39,30 @@ public class Cuenta {
 
 	public void ModificarSaldo(double saldo) {
 		setSaldo(saldo);
+	};
+	
+	private String GenerarCbu() {
+		
+		String cbuGenerado = "";
+		boolean flag;
+		
+		do {
+			flag = true;
+			for (int i = 0; i < 22; i++) {
+				int digito = (int) (Math.random() * 10);
+				cbuGenerado += digito;
+			}
+			
+			for (String cbu : listaCbus) {
+				if (cbuGenerado.equals(cbu)) {
+					flag = false;
+					break;
+				}
+			}
+		} while (!flag);
+	
+		                                                          
+		return cbuGenerado;
 	};
 
 	public void Transferir(double monto, Cuenta cuentaRemitente, Cuenta cuentaDestinataria) {
@@ -86,7 +112,7 @@ public class Cuenta {
 
 	};
 
-	public String getNroDeCuenta() {
+	public int getNroDeCuenta() {
 		return nroDeCuenta;
 	}
 
@@ -114,7 +140,7 @@ public class Cuenta {
 		return tarjetas;
 	}
 
-	private void setNroDeCuenta(String nroDeCuenta) {
+	private void setNroDeCuenta(int nroDeCuenta) {
 		this.nroDeCuenta = nroDeCuenta;
 	}
 
