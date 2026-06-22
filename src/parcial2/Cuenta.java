@@ -2,8 +2,10 @@ package parcial2;
 
 import java.util.LinkedList;
 
+import javax.swing.JOptionPane;
+
 public class Cuenta {
-	
+
 	private String nroDeCuenta;
 	private String cbu;
 	private TipoDeCuenta tipoDeCuenta;
@@ -11,9 +13,7 @@ public class Cuenta {
 	private double saldo;
 	private int pinCajero;
 	private LinkedList<Movimiento> movimientos;
-	
-	
-	
+
 	public Cuenta() {
 	}
 
@@ -26,13 +26,64 @@ public class Cuenta {
 		setPinCajero(pinCajero);
 		this.movimientos = new LinkedList<Movimiento>();
 	}
-	
+
 	public void SolicitarTarjetaDebito() {
-		
+
 	};
-	
+
 	public void SolicitarTarjetaCredito() {
-		
+
+	};
+
+	public void ModificarSaldo(double saldo) {
+		setSaldo(saldo);
+	};
+
+	public void Transferir(double monto, Cuenta cuentaRemitente, Cuenta cuentaDestinataria) {
+
+		String[] opciones = { "Dinero en cuenta", "Crédito", "Cancelar" };
+
+		int opcion;
+		boolean transferido = false;
+
+		do {
+			opcion = JOptionPane.showOptionDialog(null, "Seleccione una de las opciones para transferir:", "Transferir",
+					0, 0, null, opciones, opciones[2]);
+
+			if (opcion == 0) {
+				for (Tarjeta tarjeta : this.tarjetas) {
+					if (tarjeta instanceof Debito) {
+						transferido = tarjeta.Transferir(monto, cuentaRemitente, cuentaDestinataria);
+
+						if (!transferido) {
+							JOptionPane.showMessageDialog(null,
+									"Saldo insuficiente. \n Ingrese dinero en su cuenta o transfiera con crédito");
+
+						} else {
+							JOptionPane.showMessageDialog(null, "Trasferencia completada");
+						}
+					}
+				}
+
+			} else if (opcion == 1) {
+				for (Tarjeta tarjeta : this.tarjetas) {
+					
+					if (tarjeta instanceof Credito) {
+						transferido = tarjeta.Transferir(monto, cuentaRemitente, cuentaDestinataria);
+
+						if (!transferido) {
+							JOptionPane.showMessageDialog(null,
+									"Limite insuficiente. \n Adelanta cuotas para liberar limite");
+
+						} else {
+							JOptionPane.showMessageDialog(null, "Trasferencia completada");
+						}
+					}
+				}
+			}
+
+		} while (opcion != 2 || transferido == false);
+
 	};
 
 	public String getNroDeCuenta() {
@@ -58,6 +109,7 @@ public class Cuenta {
 	public LinkedList<Movimiento> getMovimientos() {
 		return movimientos;
 	}
+
 	public LinkedList<Tarjeta> getTarjetas() {
 		return tarjetas;
 	}
@@ -82,5 +134,4 @@ public class Cuenta {
 		this.pinCajero = pinCajero;
 	}
 
-	
 }

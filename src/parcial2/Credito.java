@@ -38,10 +38,12 @@ public class Credito extends Tarjeta {
 		
 	}
 
+
 	@Override
-	public void Transferir(double monto, Cuenta cuenta) {
+	public boolean Transferir(double monto, Cuenta cuentaRemitente, Cuenta cuentaDestinataria) {
 		// TODO Auto-generated method stub
 		
+		return false;
 	}
 	
 		

@@ -1,6 +1,10 @@
 package parcial2;
 
+import java.util.LinkedList;
+
 public class Usuario {
+	
+	protected static LinkedList<Usuario> listaUsuarios = new LinkedList<Usuario>();
 	private String nombre;
 	private String apellido;
 	private String username;
@@ -21,9 +25,22 @@ public class Usuario {
 		setDni(dni);
 	}
 
-	public void Login() {
+	public static Usuario Login(String usernameOrEmail, String contrasena) {
+		for (Usuario usuario : listaUsuarios) {
+			if ((usernameOrEmail.equals(usuario.getUsername()) || usernameOrEmail.equals(usuario.getEmail())) && contrasena.equals(usuario.getContrasena())) {
+				return usuario;
+			}
+		}
+		
+		return null;
 	};
-
+	
+	
+	
+	public static void AgregarUsuario(Usuario usuario) {
+		listaUsuarios.add(usuario);
+	};
+	
 	public String getNombre() {
 		return nombre;
 	}

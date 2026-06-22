@@ -22,7 +22,7 @@ public abstract class Tarjeta{
 	
 	public abstract void Pagar(double monto, Cuenta cuenta);
 	
-	public abstract void Transferir(double monto, Cuenta cuenta);
+	public abstract boolean Transferir(double monto, Cuenta cuentaRemitente, Cuenta cuentaDestinataria);
 
 	public String getTitular() {
 		return titular;
