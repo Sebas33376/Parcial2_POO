@@ -51,8 +51,7 @@ public class Cliente extends Usuario {
 
 	@Override
 	public String toString() {
-		return "Cliente [nroCliente=" + nroCliente + ", cuenta=" + cuenta + ", estaActiva=" + estaActiva
-				+ ", toString()=" + super.toString() + "]";
+		return "Numero de Cliente: " + nroCliente + "\nCuenta: " + cuenta + "\n" + super.toString();
 	}
 
 }

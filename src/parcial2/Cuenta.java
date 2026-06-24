@@ -1,12 +1,13 @@
 package parcial2;
 
+import java.time.LocalDate;
 import java.util.LinkedList;
 
 import javax.swing.JOptionPane;
 
 public class Cuenta {
 	private static int numero = 1;
-	private static LinkedList<String> listaCbus = new LinkedList<String>();
+	protected static LinkedList<String> listaCbus = new LinkedList<String>();
 	private int nroDeCuenta;
 	private String cbu;
 	private TipoDeCuenta tipoDeCuenta;
@@ -37,14 +38,32 @@ public class Cuenta {
 		this.movimientos = new LinkedList<Movimiento>();
 	}
 
-	public void SolicitarTarjetaDebito() {
-
+	public static void SolicitarTarjetaDebito(Cliente cliente) {
+		String nombre = cliente.getNombre().toUpperCase() + " " + cliente.getApellido().toUpperCase();
+		LocalDate fechaActual = LocalDate.now();
+		cliente.getCuenta().getTarjetas().add(
+				new Debito(nombre, Cuenta.GenerarNroTarjeta(), "123", true, fechaActual, fechaActual.plusYears(4)));
 	};
 
 	public void SolicitarTarjetaCredito() {
 
 	};
-	
+
+	public void GenerarOrdenRetiro(String dni, double monto) {
+
+		String nroRetiro = GenerarCodRetiro();
+
+		if (this.getSaldo() < monto) {
+			JOptionPane.showMessageDialog(null,"Saldo insuficiente");
+		} else {
+
+			JOptionPane.showMessageDialog(null,
+					"DNI: " + dni + "\nNumero de retiro: " + nroRetiro + "\nMonto: " + monto);
+			this.ModificarSaldo(this.saldo - monto);
+		}
+
+	}
+
 	public void IngresarDinero() {
 		double dinero = Double.parseDouble(validarNumero("Ingrese el monto que quiere ingresar:"));
 		ModificarSaldo(getSaldo() + dinero);
@@ -54,30 +73,30 @@ public class Cuenta {
 	public void ModificarSaldo(double saldo) {
 		setSaldo(saldo);
 	};
-	
+
 	private void blanquerPin() {
-		String pin ="";
+		String pin = "";
 		do {
 			pin = validarNumero("Ingresa un PIN de 4 digitos:");
 			if (pin.length() > 4 || pin.length() < 4) {
 				JOptionPane.showMessageDialog(null, "El PIN debe ser de 4 digitos");
 			}
 		} while (pin.length() > 4 || pin.length() < 4);
-		
+
 		setPinCajero(pin);
 	};
 
 	private void DefinirTipoDeCuenta() {
 		String[] opciones = { "Caja de ahorro", "Cuenta corriente" };
-		int opcion = JOptionPane.showOptionDialog(null, "Seleccione un tipo de cuenta:", "Tipo de cuenta",
-				0, 0, null, opciones, opciones[0]);
+		int opcion = JOptionPane.showOptionDialog(null, "Seleccione un tipo de cuenta:", "Tipo de cuenta", 0, 0, null,
+				opciones, opciones[0]);
 
 		switch (opcion) {
-		
+
 		case 0:
-            setTipoDeCuenta(TipoDeCuenta.CAJA_AHORRO);
+			setTipoDeCuenta(TipoDeCuenta.CAJA_AHORRO);
 			break;
-			
+
 		case 1:
 			setTipoDeCuenta(TipoDeCuenta.CUENTA_CORRIENTE);
 			break;
@@ -85,6 +104,22 @@ public class Cuenta {
 		}
 
 	};
+
+	private String GenerarCodRetiro() {
+		String codRetiro = "";
+		boolean flag;
+
+		do {
+			flag = true;
+			for (int i = 0; i < 6; i++) {
+				int digito = (int) (Math.random() * 10);
+				codRetiro += digito;
+			}
+
+		} while (!flag);
+
+		return codRetiro;
+	}
 
 	private String GenerarCbu() {
 
@@ -106,10 +141,29 @@ public class Cuenta {
 			}
 		} while (!flag);
 
+		listaCbus.add(cbuGenerado);
+
 		return cbuGenerado;
 	};
 
-	public void Transferir(double monto, Cuenta cuentaRemitente, Cuenta cuentaDestinataria) {
+	private static String GenerarNroTarjeta() {
+
+		String nroGenerado = "";
+		boolean flag;
+
+		do {
+			flag = true;
+			for (int i = 0; i < 16; i++) {
+				int digito = (int) (Math.random() * 10);
+				nroGenerado += digito;
+			}
+
+		} while (!flag);
+
+		return nroGenerado;
+	};
+
+	public static void Transferir(double monto, Cuenta cuentaRemitente, Cuenta cuentaDestinataria) {
 
 		String[] opciones = { "Dinero en cuenta", "Crédito", "Cancelar" };
 
@@ -121,7 +175,7 @@ public class Cuenta {
 					0, 0, null, opciones, opciones[2]);
 
 			if (opcion == 0) {
-				for (Tarjeta tarjeta : this.tarjetas) {
+				for (Tarjeta tarjeta : cuentaRemitente.getTarjetas()) {
 					if (tarjeta instanceof Debito) {
 						transferido = tarjeta.Transferir(monto, cuentaRemitente, cuentaDestinataria);
 
@@ -131,12 +185,13 @@ public class Cuenta {
 
 						} else {
 							JOptionPane.showMessageDialog(null, "Trasferencia completada");
+							transferido = true;
 						}
 					}
 				}
 
 			} else if (opcion == 1) {
-				for (Tarjeta tarjeta : this.tarjetas) {
+				for (Tarjeta tarjeta : cuentaRemitente.getTarjetas()) {
 
 					if (tarjeta instanceof Credito) {
 						transferido = tarjeta.Transferir(monto, cuentaRemitente, cuentaDestinataria);
@@ -147,15 +202,16 @@ public class Cuenta {
 
 						} else {
 							JOptionPane.showMessageDialog(null, "Trasferencia completada");
+							transferido = true;
 						}
 					}
 				}
 			}
 
-		} while (opcion != 2 || transferido == false);
+		} while (opcion != 2 && transferido == false);
 
 	};
-	
+
 	private String validarNumero(String mensaje) {
 		String input;
 		boolean flag;
@@ -254,8 +310,8 @@ public class Cuenta {
 
 	@Override
 	public String toString() {
-		return "nroDeCuenta: " + nroDeCuenta + ", cbu: " + cbu + ", tipoDeCuenta: " + tipoDeCuenta + ", tarjetas: "
-				+ tarjetas + ", saldo: " + saldo + ", pinCajero: " + pinCajero + ", movimientos: " + movimientos ;
+		return "Numero de Cuenta: " + nroDeCuenta + "\nCBU: " + cbu + "\nTipo de Cuenta: " + tipoDeCuenta
+				+ "\nTarjetas: " + tarjetas + "\nSaldo: " + saldo + "\nPin: " + pinCajero + "\n";
 	}
 
 }

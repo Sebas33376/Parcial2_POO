@@ -41,6 +41,7 @@ public class Main {
 			case 1:
 				usuario = new Cliente();
 				Usuario.AgregarUsuario(usuario);
+				Cuenta.SolicitarTarjetaDebito((Cliente) usuario);
 				// JOptionPane.showMessageDialog(null, usuario);
 				break;
 
@@ -60,8 +61,8 @@ public class Main {
 
 		do {
 			Cliente cliente = (Cliente) usuario;
-
-			opcion = JOptionPane.showOptionDialog(null, "Saldo: $" + cliente.getCuenta().getSaldo(),
+			
+			opcion = JOptionPane.showOptionDialog(null, "Saldo: $" + String.format("%.2f", cliente.getCuenta().getSaldo()),
 					"Bienvenido " + usuario.getNombre(), 0, -1, null, opciones, opciones[5]);
 
 			switch (opcion) {
@@ -70,13 +71,15 @@ public class Main {
 				cliente.getCuenta().IngresarDinero();
 				break;
 			case 1:
-
+				TransferirDinero(cliente);
 				break;
 			case 2:
+				double monto = Double.parseDouble(validarNumero("Ingrese el monto que quiere retirar:"));
+				cliente.getCuenta().GenerarOrdenRetiro(ValidarDni(), monto);
 
 				break;
 			case 3:
-
+				JOptionPane.showMessageDialog(null, cliente);
 				break;
 			case 4:
 
@@ -86,23 +89,46 @@ public class Main {
 
 		} while (opcion != 5);
 	}
-	
+
+	public static void TransferirDinero(Cliente cuentaRemitente) {
+		String cbu = "";
+		do {
+
+			Object seleccion = JOptionPane.showInputDialog(null, "Elija el CBU de la cuenta a transferir", "Transferir",
+					JOptionPane.QUESTION_MESSAGE, null, Cuenta.listaCbus.toArray(), Cuenta.listaCbus.get(0));
+
+			cbu = (String) seleccion;
+
+			if (cbu.length() > 22 && cbu.length() < 22) {
+				JOptionPane.showMessageDialog(null, "El CBU ingresado es invalido");
+			}
+		} while (cbu.length() > 22 && cbu.length() < 22);
+
+		Cliente cuentaDestinatario = ObtenerClientePorCbu(cbu);
+
+		double dinero = Double.parseDouble(validarNumero("Ingrese el monto que quiere transferir:"));
+
+		Cuenta.Transferir(dinero, cuentaRemitente.getCuenta(), cuentaDestinatario.getCuenta());
+
+	}
+
 	public static Cliente ObtenerClientePorCbu(String cbu) {
-		
+
 		Cliente cliente = null;
 		boolean flag = false;
-		
+
 		do {
 			for (Usuario usuario : Usuario.listaUsuarios) {
 				if (usuario instanceof Cliente) {
 					cliente = (Cliente) usuario;
 					if (cbu.equals(cliente.getCuenta().getCbu())) {
 						flag = true;
+						break;
 					}
 				}
 			}
 		} while (!flag);
-		
+
 		return cliente;
 	}
 
@@ -110,7 +136,7 @@ public class Main {
 		LinkedList<Usuario> usuarios = new LinkedList<>();
 
 		usuarios.add(new Cliente("Juan", "Pérez", "juanp89", "juan.perez@email.com", "Clave123!", "38444555",
-				TipoDeCuenta.CAJA_AHORRO, "1234",350000.64));
+				TipoDeCuenta.CAJA_AHORRO, "1234", 350000.64));
 		usuarios.add(new Cliente("María", "Gómez", "mariag", "maria.gomez@email.com", "Password987", "40111222",
 				TipoDeCuenta.CUENTA_CORRIENTE, "4321", 87345.01));
 		usuarios.add(new Cliente("Lucas", "Rodríguez", "lucas_rod", "lucas.r@email.com", "Admin2026*", "35666777",
@@ -120,7 +146,73 @@ public class Main {
 
 		for (Usuario usuario : usuarios) {
 			Usuario.AgregarUsuario(usuario);
+			if (usuario instanceof Cliente) {
+				Cuenta.SolicitarTarjetaDebito((Cliente) usuario);
+			}
 		}
 	}
+
+	private static String ValidarDni() {
+
+		String dni = "";
+		do {
+			dni = validarNumero("Ingrese su DNI:");
+
+			if (dni.length() > 8 || dni.length() < 8) {
+				JOptionPane.showMessageDialog(null, "El DNI ingresado es invalido");
+			}
+
+		} while (dni.length() > 8 || dni.length() < 8);
+
+		return dni;
+	};
+
+	private static String validarNumero(String mensaje) {
+		String input;
+		boolean flag;
+		do {
+			flag = true;
+			input = JOptionPane.showInputDialog(mensaje);
+			if (input.trim().isEmpty()) {
+				input = JOptionPane.showInputDialog("No puede estar vacío, " + mensaje);
+				flag = false;
+			} else {
+				for (int i = 0; i < input.length(); i++) {
+					if (!Character.isDigit(input.charAt(i))) {
+						JOptionPane.showMessageDialog(null, "Solo puedes ingresar números");
+						flag = false;
+						break;
+					}
+				}
+			}
+
+		} while (!flag);
+
+		return input;
+	}
+//
+//	private static String validarTexto(String mensaje) {
+//		String input;
+//		boolean flag;
+//		do {
+//			flag = true;
+//			input = JOptionPane.showInputDialog(mensaje);
+//			if (input.trim().isEmpty()) {
+//				input = JOptionPane.showInputDialog("No puede estar vacío, " + mensaje);
+//				flag = false;
+//			} else {
+//				for (int i = 0; i < input.length(); i++) {
+//					if (Character.isDigit(input.charAt(i))) {
+//						JOptionPane.showMessageDialog(null, "Solo puede ingresar un texto");
+//						flag = false;
+//						break;
+//					}
+//				}
+//			}
+//
+//		} while (!flag);
+//
+//		return input;
+//	}
 
 }

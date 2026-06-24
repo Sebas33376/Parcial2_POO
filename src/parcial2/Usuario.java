@@ -229,8 +229,8 @@ public class Usuario {
 
 	@Override
 	public String toString() {
-		return "Usuario [nombre=" + nombre + ", apellido=" + apellido + ", username=" + username + ", email=" + email
-				+ ", contrasena=" + contrasena + ", dni=" + dni + "]";
+		return "Nombre: " + nombre + "\nApellido: " + apellido + "\nUsername: " + username + "\nEmail: " + email
+				+ "\nContrasena: " + contrasena + "\nDNI: " + dni + "\n";
 	}
 	
 
