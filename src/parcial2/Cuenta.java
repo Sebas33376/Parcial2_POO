@@ -5,20 +5,28 @@ import java.util.LinkedList;
 import javax.swing.JOptionPane;
 
 public class Cuenta {
-    private static int numero = 1;
-    private static LinkedList<String> listaCbus = new LinkedList<String>(); 
+	private static int numero = 1;
+	private static LinkedList<String> listaCbus = new LinkedList<String>();
 	private int nroDeCuenta;
 	private String cbu;
 	private TipoDeCuenta tipoDeCuenta;
 	private LinkedList<Tarjeta> tarjetas;
 	private double saldo;
-	private int pinCajero;
+	private String pinCajero;
 	private LinkedList<Movimiento> movimientos;
 
 	public Cuenta() {
+		setNroDeCuenta(numero);
+		numero++;
+		setCbu(GenerarCbu());
+		DefinirTipoDeCuenta();
+		this.tarjetas = new LinkedList<Tarjeta>();
+		setSaldo(0);
+		blanquerPin();
+		this.movimientos = new LinkedList<Movimiento>();
 	}
 
-	public Cuenta(TipoDeCuenta tipoDeCuenta, int pinCajero) {
+	public Cuenta(TipoDeCuenta tipoDeCuenta, String pinCajero) {
 		setNroDeCuenta(numero);
 		numero++;
 		setCbu(GenerarCbu());
@@ -41,18 +49,49 @@ public class Cuenta {
 		setSaldo(saldo);
 	};
 	
-	private String GenerarCbu() {
+	private void blanquerPin() {
+		String pin ="";
+		do {
+			pin = validarNumero("Ingresa un PIN de 4 digitos:");
+			if (pin.length() > 4 || pin.length() < 4) {
+				JOptionPane.showMessageDialog(null, "El PIN debe ser de 4 digitos");
+			}
+		} while (pin.length() > 4 || pin.length() < 4);
 		
+		setPinCajero(pin);
+	};
+
+	private void DefinirTipoDeCuenta() {
+		String[] opciones = { "Caja de ahorro", "Cuenta corriente" };
+		int opcion = JOptionPane.showOptionDialog(null, "Seleccione un tipo de cuenta:", "Tipo de cuenta",
+				0, 0, null, opciones, opciones[0]);
+
+		switch (opcion) {
+		
+		case 0:
+            setTipoDeCuenta(TipoDeCuenta.CAJA_AHORRO);
+			break;
+			
+		case 1:
+			setTipoDeCuenta(TipoDeCuenta.CUENTA_CORRIENTE);
+			break;
+
+		}
+
+	};
+
+	private String GenerarCbu() {
+
 		String cbuGenerado = "";
 		boolean flag;
-		
+
 		do {
 			flag = true;
 			for (int i = 0; i < 22; i++) {
 				int digito = (int) (Math.random() * 10);
 				cbuGenerado += digito;
 			}
-			
+
 			for (String cbu : listaCbus) {
 				if (cbuGenerado.equals(cbu)) {
 					flag = false;
@@ -60,8 +99,7 @@ public class Cuenta {
 				}
 			}
 		} while (!flag);
-	
-		                                                          
+
 		return cbuGenerado;
 	};
 
@@ -93,7 +131,7 @@ public class Cuenta {
 
 			} else if (opcion == 1) {
 				for (Tarjeta tarjeta : this.tarjetas) {
-					
+
 					if (tarjeta instanceof Credito) {
 						transferido = tarjeta.Transferir(monto, cuentaRemitente, cuentaDestinataria);
 
@@ -111,6 +149,54 @@ public class Cuenta {
 		} while (opcion != 2 || transferido == false);
 
 	};
+	
+	private String validarNumero(String mensaje) {
+		String input;
+		boolean flag;
+		do {
+			flag = true;
+			input = JOptionPane.showInputDialog(mensaje);
+			if (input.trim().isEmpty()) {
+				input = JOptionPane.showInputDialog("No puede estar vacío, " + mensaje);
+				flag = false;
+			} else {
+				for (int i = 0; i < input.length(); i++) {
+					if (!Character.isDigit(input.charAt(i))) {
+						JOptionPane.showMessageDialog(null, "Solo puedes ingresar números");
+						flag = false;
+						break;
+					}
+				}
+			}
+
+		} while (!flag);
+
+		return input;
+	}
+
+	private String validarTexto(String mensaje) {
+		String input;
+		boolean flag;
+		do {
+			flag = true;
+			input = JOptionPane.showInputDialog(mensaje);
+			if (input.trim().isEmpty()) {
+				input = JOptionPane.showInputDialog("No puede estar vacío, " + mensaje);
+				flag = false;
+			} else {
+				for (int i = 0; i < input.length(); i++) {
+					if (Character.isDigit(input.charAt(i))) {
+						JOptionPane.showMessageDialog(null, "Solo puede ingresar un texto");
+						flag = false;
+						break;
+					}
+				}
+			}
+
+		} while (!flag);
+
+		return input;
+	}
 
 	public int getNroDeCuenta() {
 		return nroDeCuenta;
@@ -128,7 +214,7 @@ public class Cuenta {
 		return saldo;
 	}
 
-	public int getPinCajero() {
+	public String getPinCajero() {
 		return pinCajero;
 	}
 
@@ -156,8 +242,14 @@ public class Cuenta {
 		this.saldo = saldo;
 	}
 
-	private void setPinCajero(int pinCajero) {
+	private void setPinCajero(String pinCajero) {
 		this.pinCajero = pinCajero;
+	}
+
+	@Override
+	public String toString() {
+		return "Cuenta [nroDeCuenta=" + nroDeCuenta + ", cbu=" + cbu + ", tipoDeCuenta=" + tipoDeCuenta + ", tarjetas="
+				+ tarjetas + ", saldo=" + saldo + ", pinCajero=" + pinCajero + ", movimientos=" + movimientos + "]";
 	}
 
 }

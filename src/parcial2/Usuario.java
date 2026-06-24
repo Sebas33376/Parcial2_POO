@@ -19,7 +19,7 @@ public class Usuario {
 		setApellido(validarTexto("Ingrese su apellido:"));
 		setUsername(validarTexto("Ingrese un nombre de usuario"));
 		setEmail(validarEmail("Ingrese su email"));
-		setDni(validarNumero("Ingrese su DNI:"));
+		ValidarDni();
 		setContrasena(ConfirmarContrasena());
 	};
 
@@ -93,6 +93,21 @@ public class Usuario {
 
 		return input;
 	}
+	
+	private void ValidarDni() {
+		
+		String dni ="";
+		do {
+			dni = validarNumero("Ingrese su DNI:");
+			
+			if (dni.length() > 8 || dni.length() < 8) {
+				JOptionPane.showMessageDialog(null, "El DNI ingresado es invalido");
+			}
+			
+		} while (dni.length() > 8 || dni.length() < 8);
+		
+		setDni(dni);
+	};
 
 	private String validarNumero(String mensaje) {
 		String input;
@@ -210,11 +225,13 @@ public class Usuario {
 	private void setDni(String dni) {
 		this.dni = dni;
 	}
-	
+
 	@Override
 	public String toString() {
 		return "Usuario [nombre=" + nombre + ", apellido=" + apellido + ", username=" + username + ", email=" + email
 				+ ", contrasena=" + contrasena + ", dni=" + dni + "]";
 	}
+	
+
 
 }
