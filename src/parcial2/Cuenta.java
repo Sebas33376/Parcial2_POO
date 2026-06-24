@@ -26,13 +26,13 @@ public class Cuenta {
 		this.movimientos = new LinkedList<Movimiento>();
 	}
 
-	public Cuenta(TipoDeCuenta tipoDeCuenta, String pinCajero) {
+	public Cuenta(TipoDeCuenta tipoDeCuenta, String pinCajero, double saldo) {
 		setNroDeCuenta(numero);
 		numero++;
 		setCbu(GenerarCbu());
 		setTipoDeCuenta(tipoDeCuenta);
 		this.tarjetas = new LinkedList<Tarjeta>();
-		setSaldo(0);
+		setSaldo(saldo);
 		setPinCajero(pinCajero);
 		this.movimientos = new LinkedList<Movimiento>();
 	}
@@ -44,6 +44,12 @@ public class Cuenta {
 	public void SolicitarTarjetaCredito() {
 
 	};
+	
+	public void IngresarDinero() {
+		double dinero = Double.parseDouble(validarNumero("Ingrese el monto que quiere ingresar:"));
+		ModificarSaldo(getSaldo() + dinero);
+		JOptionPane.showMessageDialog(null, "El dinero fue ingresado con exito");
+	}
 
 	public void ModificarSaldo(double saldo) {
 		setSaldo(saldo);
@@ -174,29 +180,29 @@ public class Cuenta {
 		return input;
 	}
 
-	private String validarTexto(String mensaje) {
-		String input;
-		boolean flag;
-		do {
-			flag = true;
-			input = JOptionPane.showInputDialog(mensaje);
-			if (input.trim().isEmpty()) {
-				input = JOptionPane.showInputDialog("No puede estar vacío, " + mensaje);
-				flag = false;
-			} else {
-				for (int i = 0; i < input.length(); i++) {
-					if (Character.isDigit(input.charAt(i))) {
-						JOptionPane.showMessageDialog(null, "Solo puede ingresar un texto");
-						flag = false;
-						break;
-					}
-				}
-			}
-
-		} while (!flag);
-
-		return input;
-	}
+//	private String validarTexto(String mensaje) {
+//		String input;
+//		boolean flag;
+//		do {
+//			flag = true;
+//			input = JOptionPane.showInputDialog(mensaje);
+//			if (input.trim().isEmpty()) {
+//				input = JOptionPane.showInputDialog("No puede estar vacío, " + mensaje);
+//				flag = false;
+//			} else {
+//				for (int i = 0; i < input.length(); i++) {
+//					if (Character.isDigit(input.charAt(i))) {
+//						JOptionPane.showMessageDialog(null, "Solo puede ingresar un texto");
+//						flag = false;
+//						break;
+//					}
+//				}
+//			}
+//
+//		} while (!flag);
+//
+//		return input;
+//	}
 
 	public int getNroDeCuenta() {
 		return nroDeCuenta;
@@ -248,8 +254,8 @@ public class Cuenta {
 
 	@Override
 	public String toString() {
-		return "Cuenta [nroDeCuenta=" + nroDeCuenta + ", cbu=" + cbu + ", tipoDeCuenta=" + tipoDeCuenta + ", tarjetas="
-				+ tarjetas + ", saldo=" + saldo + ", pinCajero=" + pinCajero + ", movimientos=" + movimientos + "]";
+		return "nroDeCuenta: " + nroDeCuenta + ", cbu: " + cbu + ", tipoDeCuenta: " + tipoDeCuenta + ", tarjetas: "
+				+ tarjetas + ", saldo: " + saldo + ", pinCajero: " + pinCajero + ", movimientos: " + movimientos ;
 	}
 
 }

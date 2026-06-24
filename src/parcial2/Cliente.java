@@ -1,5 +1,7 @@
 package parcial2;
 
+import javax.swing.JOptionPane;
+
 public class Cliente extends Usuario {
 
 	private static int numero = 1;
@@ -14,15 +16,16 @@ public class Cliente extends Usuario {
 		setCuenta(new Cuenta());
 		numero++;
 		this.estaActiva = true;
+		JOptionPane.showInternalMessageDialog(null, "Te has registrado con éxito");
 
 	}
 
 	public Cliente(String nombre, String apellido, String username, String email, String contrasena, String dni,
-			TipoDeCuenta tipoDeCuenta, String pinCajero) {
+			TipoDeCuenta tipoDeCuenta, String pinCajero, double saldo) {
 		super(nombre, apellido, username, email, contrasena, dni);
 		// TODO Auto-generated constructor stub
 		setNroCliente(numero++);
-		setCuenta(new Cuenta(tipoDeCuenta, pinCajero));
+		setCuenta(new Cuenta(tipoDeCuenta, pinCajero, saldo));
 		this.estaActiva = true;
 	}
 

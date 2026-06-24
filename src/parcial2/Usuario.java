@@ -21,6 +21,7 @@ public class Usuario {
 		setEmail(validarEmail("Ingrese su email"));
 		ValidarDni();
 		setContrasena(ConfirmarContrasena());
+
 	};
 
 	public Usuario(String nombre, String apellido, String username, String email, String contrasena, String dni) {
@@ -44,7 +45,7 @@ public class Usuario {
 
 	public static void AgregarUsuario(Usuario usuario) {
 		listaUsuarios.add(usuario);
-		JOptionPane.showInternalMessageDialog(null, "Te has registrado con éxito");
+		
 	};
 
 	public String ConfirmarContrasena() {
