@@ -1,5 +1,6 @@
 package parcial2;
 
+import java.time.LocalDate;
 import java.util.LinkedList;
 
 import javax.swing.JOptionPane;
@@ -54,7 +55,7 @@ public class Main {
 
 	public static void Home(Usuario usuario) {
 
-		String[] opciones = { "Ingresar dinero", "Transferir dinero", "Retirar dinero", "Mis datos", "Pagar servicios",
+		String[] opciones = { "Ingresar dinero", "Transferir dinero", "Retirar dinero", "Movimientos" ,"Mis datos", "Pagar servicios",
 				"Cerrar Sesión" };
 
 		int opcion;
@@ -79,15 +80,18 @@ public class Main {
 
 				break;
 			case 3:
-				JOptionPane.showMessageDialog(null, cliente);
+				JOptionPane.showMessageDialog(null, cliente.getCuenta().MostrarMovimientos());
 				break;
 			case 4:
-
+				JOptionPane.showMessageDialog(null, cliente);
+				break;
+			case 5:
+				JOptionPane.showMessageDialog(null, cliente);
 				break;
 
 			}
 
-		} while (opcion != 5);
+		} while (opcion != 6);
 	}
 
 	public static void TransferirDinero(Cliente cuentaRemitente) {
@@ -150,6 +154,7 @@ public class Main {
 				Cuenta.SolicitarTarjetaDebito((Cliente) usuario);
 			}
 		}
+		
 	}
 
 	private static String ValidarDni() {

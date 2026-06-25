@@ -12,6 +12,7 @@ public class Cuenta {
 	private String cbu;
 	private TipoDeCuenta tipoDeCuenta;
 	private LinkedList<Tarjeta> tarjetas;
+	private LinkedList<Servicio> servicios;
 	private double saldo;
 	private String pinCajero;
 	private LinkedList<Movimiento> movimientos;
@@ -22,6 +23,7 @@ public class Cuenta {
 		setCbu(GenerarCbu());
 		DefinirTipoDeCuenta();
 		this.tarjetas = new LinkedList<Tarjeta>();
+		this.servicios = new LinkedList<Servicio>();
 		setSaldo(0);
 		blanquerPin();
 		this.movimientos = new LinkedList<Movimiento>();
@@ -33,6 +35,7 @@ public class Cuenta {
 		setCbu(GenerarCbu());
 		setTipoDeCuenta(tipoDeCuenta);
 		this.tarjetas = new LinkedList<Tarjeta>();
+		this.servicios = new LinkedList<Servicio>();
 		setSaldo(saldo);
 		setPinCajero(pinCajero);
 		this.movimientos = new LinkedList<Movimiento>();
@@ -48,6 +51,30 @@ public class Cuenta {
 	public void SolicitarTarjetaCredito() {
 
 	};
+	
+	public void AgregarMovimiento(Movimiento movimiento) {
+		this.movimientos.add(movimiento);
+	}
+	
+	public void AgregarServicio(Servicio servicio) {
+		this.servicios.add(servicio);
+	}
+	
+	public String MostrarMovimientos() {
+		String movimientos = "";
+		
+		for (Movimiento movimiento : this.movimientos) {
+			movimientos += movimiento;
+		}
+		
+		if (this.movimientos.isEmpty()) {
+			return "No hay movimientos registrados";
+		} else {
+
+			return movimientos;
+		}
+		
+	}
 
 	public void GenerarOrdenRetiro(String dni, double monto) {
 
@@ -61,6 +88,9 @@ public class Cuenta {
 					"DNI: " + dni + "\nNumero de retiro: " + nroRetiro + "\nMonto: " + monto);
 			this.ModificarSaldo(this.saldo - monto);
 		}
+		
+		Movimiento movimiento = new Movimiento("Retiro de dinero", monto);
+		this.AgregarMovimiento(movimiento);
 
 	}
 
@@ -68,6 +98,8 @@ public class Cuenta {
 		double dinero = Double.parseDouble(validarNumero("Ingrese el monto que quiere ingresar:"));
 		ModificarSaldo(getSaldo() + dinero);
 		JOptionPane.showMessageDialog(null, "El dinero fue ingresado con exito");
+		Movimiento movimiento = new Movimiento("Ingreso de dinero", dinero);
+		this.AgregarMovimiento(movimiento);
 	}
 
 	public void ModificarSaldo(double saldo) {
@@ -186,6 +218,10 @@ public class Cuenta {
 						} else {
 							JOptionPane.showMessageDialog(null, "Trasferencia completada");
 							transferido = true;
+							Movimiento movimientoRemitente = new Movimiento("Transferiste dinero" + "\nCBU: " + cuentaDestinataria.getCbu(), monto);
+							Movimiento movimientoDestinatario = new Movimiento("Reciviste dinero" + "\nCBU: " + cuentaRemitente.getCbu(), monto);
+							cuentaRemitente.AgregarMovimiento(movimientoRemitente);
+							cuentaDestinataria.AgregarMovimiento(movimientoDestinatario);
 						}
 					}
 				}

@@ -4,16 +4,18 @@ import java.time.LocalDate;
 
 public class Movimiento {
 
+	private static int numero = 1;
 	private LocalDate fechaRealizada;
 	private int nroOperacion;
-	private String nombreCuenta;
+	private String nombre;
 	private double monto;
 	
-	public Movimiento(LocalDate fechaRealizada, int nroOperacion, String nombreCuenta, double monto) {
+	public Movimiento(String nombre, double monto) {
 		
-		setFechaRealizada(fechaRealizada);
-		setNroOperacion(nroOperacion);
-		setNombreCuenta(nombreCuenta);
+		setFechaRealizada(LocalDate.now());
+		setNroOperacion(numero);
+		numero++;
+		setNombre(nombre);
 		setMonto(monto);
 	}
 
@@ -33,12 +35,12 @@ public class Movimiento {
 		this.nroOperacion = nroOperacion;
 	}
 
-	public String getNombreCuenta() {
-		return nombreCuenta;
+	public String getNombre() {
+		return nombre;
 	}
 
-	private void setNombreCuenta(String nombreCuenta) {
-		this.nombreCuenta = nombreCuenta;
+	private void setNombre(String nombreCuenta) {
+		this.nombre = nombreCuenta;
 	}
 
 	public double getMonto() {
@@ -47,6 +49,12 @@ public class Movimiento {
 
 	private void setMonto(double monto) {
 		this.monto = monto;
+	}
+
+	@Override
+	public String toString() {
+		return "Fecha: " + fechaRealizada + "\nN° Operacion:" + nroOperacion + "\nNombre: " + nombre
+				+ "\nMonto: " + monto + "\n\n";
 	}
 	
 	
