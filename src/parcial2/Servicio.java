@@ -4,25 +4,18 @@ import java.time.LocalDate;
 import java.util.LinkedList;
 
 public class Servicio {
-    private static int numero = 1;
-    private int nroServicio;
+
 	private LocalDate fechaVencimiento;
 	private String nombre;
 	private double costo;
 	
 	public Servicio(LocalDate fechaVencimiento, String nombre, double costo) {
-		setNroServicio(numero);
-		numero++;
 		setFechaVencimiento(fechaVencimiento);
 		setNombre(nombre);
 		setCosto(costo);
 		
 	}
 	
-	
-	public int getNroServicio() {
-		return nroServicio;
-	}
 	
 	public LocalDate getFechaVencimiento() {
 		return fechaVencimiento;
@@ -36,10 +29,6 @@ public class Servicio {
 		return costo;
 	}
 
-	public void setNroServicio(int nroServicio) {
-		this.nroServicio = nroServicio;
-	}
-	
 	private void setFechaVencimiento(LocalDate fechaVencimiento) {
 		this.fechaVencimiento = fechaVencimiento;
 	}

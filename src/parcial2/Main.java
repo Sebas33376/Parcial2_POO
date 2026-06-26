@@ -139,21 +139,56 @@ public class Main {
 	public static void Seeder() {
 		LinkedList<Usuario> usuarios = new LinkedList<>();
 
-		usuarios.add(new Cliente("Juan", "Pérez", "juanp89", "juan.perez@email.com", "Clave123!", "38444555",
-				TipoDeCuenta.CAJA_AHORRO, "1234", 350000.64));
-		usuarios.add(new Cliente("María", "Gómez", "mariag", "maria.gomez@email.com", "Password987", "40111222",
-				TipoDeCuenta.CUENTA_CORRIENTE, "4321", 87345.01));
-		usuarios.add(new Cliente("Lucas", "Rodríguez", "lucas_rod", "lucas.r@email.com", "Admin2026*", "35666777",
-				TipoDeCuenta.CAJA_AHORRO, "9876", 826789.00));
-		usuarios.add(new Cliente("Ana", "Martínez", "anamart", "ana.mtz@email.com", "Segura321", "42999888",
-				TipoDeCuenta.CUENTA_CORRIENTE, "5678", 16489.21));
+//		usuarios.add(new Cliente("Juan", "Pérez", "juanp89", "juan.perez@email.com", "Clave123!", "38444555",
+//				TipoDeCuenta.CAJA_AHORRO, "1234", 350000.64));
+//		usuarios.add(new Cliente("María", "Gómez", "mariag", "maria.gomez@email.com", "Password987", "40111222",
+//				TipoDeCuenta.CUENTA_CORRIENTE, "4321", 87345.01));
+//		usuarios.add(new Cliente("Lucas", "Rodríguez", "lucas_rod", "lucas.r@email.com", "Admin2026*", "35666777",
+//				TipoDeCuenta.CAJA_AHORRO, "9876", 826789.00));
+//		usuarios.add(new Cliente("Ana", "Martínez", "anamart", "ana.mtz@email.com", "Segura321", "42999888",
+//				TipoDeCuenta.CUENTA_CORRIENTE, "5678", 16489.21));
+//
+//		for (Usuario usuario : usuarios) {
+//			Usuario.AgregarUsuario(usuario);
+//			if (usuario instanceof Cliente) {
+//				Cuenta.SolicitarTarjetaDebito((Cliente) usuario);
+//			}
+//		}
+		
+		Cliente juan = new Cliente("Juan", "Pérez", "juanp89", "juan.perez@email.com", "Clave123!", "38444555",
+	            TipoDeCuenta.CAJA_AHORRO, "1234", 350000.64);
+	    
+	    Cliente maria = new Cliente("María", "Gómez", "mariag", "maria.gomez@email.com", "Password987", "40111222",
+	            TipoDeCuenta.CUENTA_CORRIENTE, "4321", 87345.01);
+	    
+	    Cliente lucas = new Cliente("Lucas", "Rodríguez", "lucas_rod", "lucas.r@email.com", "Admin2026*", "35666777",
+	            TipoDeCuenta.CAJA_AHORRO, "9876", 826789.00);
+	    
+	    Cliente ana = new Cliente("Ana", "Martínez", "anamart", "ana.mtz@email.com", "Segura321", "42999888",
+	            TipoDeCuenta.CUENTA_CORRIENTE, "5678", 16489.21);
 
-		for (Usuario usuario : usuarios) {
-			Usuario.AgregarUsuario(usuario);
-			if (usuario instanceof Cliente) {
-				Cuenta.SolicitarTarjetaDebito((Cliente) usuario);
-			}
-		}
+	    juan.getCuenta().AgregarServicio(new Servicio(LocalDate.of(2026, 7, 10), "Luz Eléctrica", 4500.50));
+	    juan.getCuenta().AgregarServicio(new Servicio(LocalDate.of(2026, 7, 5), "Internet 300MB", 5800.00));
+
+	    // Servicios de María (Mismos servicios pero distintos precios/vencimientos + Netflix)
+	    maria.getCuenta().AgregarServicio(new Servicio(LocalDate.of(2026, 7, 12), "Luz Eléctrica", 6100.00));
+	    maria.getCuenta().AgregarServicio(new Servicio(LocalDate.of(2026, 7, 8), "Internet 300MB", 4900.00));
+	    maria.getCuenta().AgregarServicio(new Servicio(LocalDate.of(2026, 7, 22), "Suscripción Netflix", 1200.90));
+
+	    // Servicios de Lucas (Tiene Gas y un seguro alto)
+	    lucas.getCuenta().AgregarServicio(new Servicio(LocalDate.of(2026, 7, 15), "Gas Natural", 3200.25));
+	    lucas.getCuenta().AgregarServicio(new Servicio(LocalDate.of(2026, 7, 28), "Seguro del Hogar", 7500.00));
+
+	    // Servicios de Ana (Tiene un combo completo pero ajustado a su presupuesto)
+	    ana.getCuenta().AgregarServicio(new Servicio(LocalDate.of(2026, 7, 10), "Luz Eléctrica", 3800.00));
+	    ana.getCuenta().AgregarServicio(new Servicio(LocalDate.of(2026, 7, 15), "Agua Corriente", 1800.00));
+	    ana.getCuenta().AgregarServicio(new Servicio(LocalDate.of(2026, 7, 5), "Internet 100MB", 3500.00));
+
+
+	    usuarios.add(juan);
+	    usuarios.add(maria);
+	    usuarios.add(lucas);
+	    usuarios.add(ana);
 		
 	}
 

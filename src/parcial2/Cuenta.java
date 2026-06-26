@@ -75,6 +75,10 @@ public class Cuenta {
 		}
 		
 	}
+	
+	public void MostrarServicios() {
+		this.getServicios();
+	}
 
 	public void GenerarOrdenRetiro(String dni, double monto) {
 
@@ -318,6 +322,10 @@ public class Cuenta {
 
 	public LinkedList<Movimiento> getMovimientos() {
 		return movimientos;
+	}
+	
+	public LinkedList<Servicio> getServicios() {
+		return servicios;
 	}
 
 	public LinkedList<Tarjeta> getTarjetas() {
