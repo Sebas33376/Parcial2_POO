@@ -54,7 +54,7 @@ public class Movimiento {
 	@Override
 	public String toString() {
 		return "Fecha: " + fechaRealizada + "\nN° Operacion:" + nroOperacion + "\nNombre: " + nombre
-				+ "\nMonto: " + monto + "\n\n";
+				+ "\nMonto: $" + monto + "\n\n";
 	}
 	
 	

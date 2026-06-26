@@ -79,6 +79,17 @@ public class Cuenta {
 	public void MostrarServicios() {
 		this.getServicios();
 	}
+	
+	public void PagarServicio(Servicio servicio) {
+		
+		if (this.getSaldo() < servicio.getCosto()) {
+			JOptionPane.showMessageDialog(null,"Saldo insuficiente");
+		} else {
+			ModificarSaldo(this.getSaldo() - servicio.getCosto());
+			Movimiento movimiento = new Movimiento("Pago de servicio - " + servicio.getNombre(), servicio.getCosto());
+			this.AgregarMovimiento(movimiento);
+		}
+	}
 
 	public void GenerarOrdenRetiro(String dni, double monto) {
 
@@ -355,7 +366,7 @@ public class Cuenta {
 	@Override
 	public String toString() {
 		return "Numero de Cuenta: " + nroDeCuenta + "\nCBU: " + cbu + "\nTipo de Cuenta: " + tipoDeCuenta
-				+ "\nTarjetas: " + tarjetas + "\nSaldo: " + saldo + "\nPin: " + pinCajero + "\n";
+				+ "\nTarjetas: " + tarjetas + "\nSaldo: $" + saldo + "\nPin: " + pinCajero + "\n";
 	}
 
 }

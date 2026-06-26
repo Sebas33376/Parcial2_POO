@@ -1,7 +1,6 @@
 package parcial2;
 
 import java.time.LocalDate;
-import java.util.LinkedList;
 
 public class Servicio {
 
@@ -43,7 +42,7 @@ public class Servicio {
 
 	@Override
 	public String toString() {
-		return "Fecha de vencimiento: " + fechaVencimiento + "\nNombre: " + nombre + "\nCosto:" + costo;
+		return "Vencimiento: " + fechaVencimiento + " Servicio: " + nombre + " Costo: $" + costo;
 	};
 	
 	

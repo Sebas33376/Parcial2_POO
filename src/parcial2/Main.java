@@ -2,6 +2,7 @@ package parcial2;
 
 import java.time.LocalDate;
 import java.util.LinkedList;
+import java.util.stream.Collectors;
 
 import javax.swing.JOptionPane;
 
@@ -86,20 +87,39 @@ public class Main {
 				JOptionPane.showMessageDialog(null, cliente);
 				break;
 			case 5:
-				JOptionPane.showMessageDialog(null, cliente);
+				MostrarServicios(cliente.getCuenta());
 				break;
 
 			}
 
 		} while (opcion != 6);
 	}
+	
+	public static void MostrarServicios(Cuenta cuenta) {
+		
+		int opcion = JOptionPane.showOptionDialog(null, "Seleccione el servicio que quiere pagar:" ,
+				"Servicios", 0, -1, null, cuenta.getServicios().toArray(), cuenta.getServicios().toArray()[0]);
+		
+		Servicio servicio = cuenta.getServicios().get(opcion);
+		
+		int confirmar = JOptionPane.showConfirmDialog(null, "Queres pagar este servicio?\n" + servicio);
+		
+		if (confirmar == 0) {
+			cuenta.PagarServicio(servicio);
+		}
+	}
 
 	public static void TransferirDinero(Cliente cuentaRemitente) {
 		String cbu = "";
 		do {
+			
+			LinkedList<String> filtroListaCbus = Cuenta.listaCbus.stream()
+				    .filter(CBU -> !CBU.equals(cuentaRemitente.getCuenta().getCbu()))
+				    .collect(Collectors.toCollection(LinkedList::new));
+
 
 			Object seleccion = JOptionPane.showInputDialog(null, "Elija el CBU de la cuenta a transferir", "Transferir",
-					JOptionPane.QUESTION_MESSAGE, null, Cuenta.listaCbus.toArray(), Cuenta.listaCbus.get(0));
+					JOptionPane.QUESTION_MESSAGE, null, filtroListaCbus.toArray(), Cuenta.listaCbus.get(0));
 
 			cbu = (String) seleccion;
 
@@ -189,6 +209,13 @@ public class Main {
 	    usuarios.add(maria);
 	    usuarios.add(lucas);
 	    usuarios.add(ana);
+	    
+		for (Usuario usuario : usuarios) {
+			Usuario.AgregarUsuario(usuario);
+			if (usuario instanceof Cliente) {
+				Cuenta.SolicitarTarjetaDebito((Cliente) usuario);
+			}
+		}
 		
 	}
 
