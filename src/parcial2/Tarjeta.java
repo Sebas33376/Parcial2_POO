@@ -71,6 +71,13 @@ public abstract class Tarjeta{
 	private void setFechaVencimiento(LocalDate fechaVencimiento) {
 		this.fechaVencimiento = fechaVencimiento;
 	}
+
+	@Override
+	public String toString() {
+		return "\nTitular: " + titular + "\nNumero: " + numTarjeta + "\nCódigo: " + codSeguridad
+				+ "\nDesde: " + fechaImpresion + "\nHasta: "
+				+ fechaVencimiento;
+	}
 	
 	
 	

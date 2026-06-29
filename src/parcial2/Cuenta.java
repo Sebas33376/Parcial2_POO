@@ -366,7 +366,7 @@ public class Cuenta {
 	@Override
 	public String toString() {
 		return "Numero de Cuenta: " + nroDeCuenta + "\nCBU: " + cbu + "\nTipo de Cuenta: " + tipoDeCuenta
-				+ "\nTarjetas: " + tarjetas + "\nSaldo: $" + saldo + "\nPin: " + pinCajero + "\n";
+				+ "\nTarjetas: " + tarjetas.get(0) + "\nSaldo: $" + saldo + "\nPin: " + pinCajero + "\n";
 	}
 
 }
