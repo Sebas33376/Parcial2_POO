@@ -1,9 +1,11 @@
 package parcial2;
 
+import java.awt.Image;
 import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.stream.Collectors;
 
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 public class Main {
@@ -12,13 +14,20 @@ public class Main {
 		// TODO Auto-generated method stub
 
 		Seeder();
+		
+		ImageIcon imagen = new ImageIcon(Main.class.getResource("imgBanco.png"));
+		
+		Image recortado = imagen.getImage().getScaledInstance(200, 100, Image.SCALE_SMOOTH);
+		
+		imagen = new ImageIcon(recortado);
+
 
 		String[] opciones = { "Iniciar Sesión", "Registrarse", "Cerrar" };
 		int opcion;
 
 		do {
 
-			opcion = JOptionPane.showOptionDialog(null, null, "Inicia Sesión o regístrate", 0, -1, null, opciones,
+			opcion = JOptionPane.showOptionDialog(null, imagen, "Inicia Sesión o regístrate", 0, -1, null, opciones,
 					opciones[2]);
 			Usuario usuario = null;
 			switch (opcion) {
