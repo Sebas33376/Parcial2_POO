@@ -14,13 +14,12 @@ public class Main {
 		// TODO Auto-generated method stub
 
 		Seeder();
-		
-		ImageIcon imagen = new ImageIcon(Main.class.getResource("imgBanco.png"));
-		
-		Image recortado = imagen.getImage().getScaledInstance(200, 100, Image.SCALE_SMOOTH);
-		
-		imagen = new ImageIcon(recortado);
 
+		ImageIcon imagen = new ImageIcon(Main.class.getResource("imgBanco.png"));
+
+		Image recortado = imagen.getImage().getScaledInstance(200, 100, Image.SCALE_SMOOTH);
+
+		imagen = new ImageIcon(recortado);
 
 		String[] opciones = { "Iniciar Sesión", "Registrarse", "Cerrar" };
 		int opcion;
@@ -53,27 +52,70 @@ public class Main {
 				usuario = new Cliente();
 				Usuario.AgregarUsuario(usuario);
 				Cuenta.SolicitarTarjetaDebito((Cliente) usuario);
-				
+
 				break;
 
 			}
-			Home(usuario);
+			if (usuario instanceof Cliente) {
+				Home(usuario);
+
+			} else {
+				Admin(usuario);
+			}
 
 		} while (opcion != 2);
 
 	}
 
+	public static void Admin(Usuario usuario) {
+		String[] opciones = { "Ver clientes", "Eliminar clientes", "Cerrar Sesión" };
+
+		int opcion;
+
+		do {
+			Empleado empleado = (Empleado) usuario;
+
+			opcion = JOptionPane.showOptionDialog(null, null, "Bienvenido " + empleado.getNombre(), 0, -1, null,
+					opciones, opciones[5]);
+
+			switch (opcion) {
+
+			case 0:
+
+				break;
+			case 1:
+
+				break;
+			case 2:
+
+				break;
+			case 3:
+
+				break;
+			case 4:
+
+				break;
+			case 5:
+
+				break;
+
+			}
+
+		} while (opcion != 6);
+	}
+
 	public static void Home(Usuario usuario) {
 
-		String[] opciones = { "Ingresar dinero", "Transferir dinero", "Retirar dinero", "Movimientos" ,"Mis datos", "Pagar servicios",
-				"Cerrar Sesión" };
+		String[] opciones = { "Ingresar dinero", "Transferir dinero", "Retirar dinero", "Movimientos", "Mis datos",
+				"Pagar servicios", "Cerrar Sesión" };
 
 		int opcion;
 
 		do {
 			Cliente cliente = (Cliente) usuario;
-			
-			opcion = JOptionPane.showOptionDialog(null, "Saldo: $" + String.format("%.2f", cliente.getCuenta().getSaldo()),
+
+			opcion = JOptionPane.showOptionDialog(null,
+					"Saldo: $" + String.format("%.2f", cliente.getCuenta().getSaldo()),
 					"Bienvenido " + usuario.getNombre(), 0, -1, null, opciones, opciones[5]);
 
 			switch (opcion) {
@@ -103,16 +145,16 @@ public class Main {
 
 		} while (opcion != 6);
 	}
-	
+
 	public static void MostrarServicios(Cuenta cuenta) {
-		
-		int opcion = JOptionPane.showOptionDialog(null, "Seleccione el servicio que quiere pagar:" ,
-				"Servicios", 0, -1, null, cuenta.getServicios().toArray(), cuenta.getServicios().toArray()[0]);
-		
+
+		int opcion = JOptionPane.showOptionDialog(null, "Seleccione el servicio que quiere pagar:", "Servicios", 0, -1,
+				null, cuenta.getServicios().toArray(), cuenta.getServicios().toArray()[0]);
+
 		Servicio servicio = cuenta.getServicios().get(opcion);
-		
+
 		int confirmar = JOptionPane.showConfirmDialog(null, "Queres pagar este servicio?\n" + servicio);
-		
+
 		if (confirmar == 0) {
 			cuenta.PagarServicio(servicio);
 		}
@@ -121,11 +163,10 @@ public class Main {
 	public static void TransferirDinero(Cliente cuentaRemitente) {
 		String cbu = "";
 		do {
-			
-			LinkedList<String> filtroListaCbus = Cuenta.listaCbus.stream()
-				    .filter(CBU -> !CBU.equals(cuentaRemitente.getCuenta().getCbu()))
-				    .collect(Collectors.toCollection(LinkedList::new));
 
+			LinkedList<String> filtroListaCbus = Cuenta.listaCbus.stream()
+					.filter(CBU -> !CBU.equals(cuentaRemitente.getCuenta().getCbu()))
+					.collect(Collectors.toCollection(LinkedList::new));
 
 			Object seleccion = JOptionPane.showInputDialog(null, "Elija el CBU de la cuenta a transferir", "Transferir",
 					JOptionPane.QUESTION_MESSAGE, null, filtroListaCbus.toArray(), Cuenta.listaCbus.get(0));
@@ -183,49 +224,49 @@ public class Main {
 //				Cuenta.SolicitarTarjetaDebito((Cliente) usuario);
 //			}
 //		}
-		
+
 		Cliente juan = new Cliente("Juan", "Pérez", "juanp89", "juan.perez@email.com", "Clave123!", "38444555",
-	            TipoDeCuenta.CAJA_AHORRO, "1234", 350000.64);
-	    
-	    Cliente maria = new Cliente("María", "Gómez", "mariag", "maria.gomez@email.com", "Password987", "40111222",
-	            TipoDeCuenta.CUENTA_CORRIENTE, "4321", 87345.01);
-	    
-	    Cliente lucas = new Cliente("Lucas", "Rodríguez", "lucas_rod", "lucas.r@email.com", "Admin2026*", "35666777",
-	            TipoDeCuenta.CAJA_AHORRO, "9876", 826789.00);
-	    
-	    Cliente ana = new Cliente("Ana", "Martínez", "anamart", "ana.mtz@email.com", "Segura321", "42999888",
-	            TipoDeCuenta.CUENTA_CORRIENTE, "5678", 16489.21);
+				TipoDeCuenta.CAJA_AHORRO, "1234", 350000.64);
 
-	    juan.getCuenta().AgregarServicio(new Servicio(LocalDate.of(2026, 7, 10), "Luz Eléctrica", 4500.50));
-	    juan.getCuenta().AgregarServicio(new Servicio(LocalDate.of(2026, 7, 5), "Internet 300MB", 5800.00));
+		Cliente maria = new Cliente("María", "Gómez", "mariag", "maria.gomez@email.com", "Password987", "40111222",
+				TipoDeCuenta.CUENTA_CORRIENTE, "4321", 87345.01);
 
-	    // Servicios de María (Mismos servicios pero distintos precios/vencimientos + Netflix)
-	    maria.getCuenta().AgregarServicio(new Servicio(LocalDate.of(2026, 7, 12), "Luz Eléctrica", 6100.00));
-	    maria.getCuenta().AgregarServicio(new Servicio(LocalDate.of(2026, 7, 8), "Internet 300MB", 4900.00));
-	    maria.getCuenta().AgregarServicio(new Servicio(LocalDate.of(2026, 7, 22), "Suscripción Netflix", 1200.90));
+		Cliente lucas = new Cliente("Lucas", "Rodríguez", "lucas_rod", "lucas.r@email.com", "Admin2026*", "35666777",
+				TipoDeCuenta.CAJA_AHORRO, "9876", 826789.00);
 
-	    // Servicios de Lucas (Tiene Gas y un seguro alto)
-	    lucas.getCuenta().AgregarServicio(new Servicio(LocalDate.of(2026, 7, 15), "Gas Natural", 3200.25));
-	    lucas.getCuenta().AgregarServicio(new Servicio(LocalDate.of(2026, 7, 28), "Seguro del Hogar", 7500.00));
+		Cliente ana = new Cliente("Ana", "Martínez", "anamart", "ana.mtz@email.com", "Segura321", "42999888",
+				TipoDeCuenta.CUENTA_CORRIENTE, "5678", 16489.21);
 
-	    // Servicios de Ana (Tiene un combo completo pero ajustado a su presupuesto)
-	    ana.getCuenta().AgregarServicio(new Servicio(LocalDate.of(2026, 7, 10), "Luz Eléctrica", 3800.00));
-	    ana.getCuenta().AgregarServicio(new Servicio(LocalDate.of(2026, 7, 15), "Agua Corriente", 1800.00));
-	    ana.getCuenta().AgregarServicio(new Servicio(LocalDate.of(2026, 7, 5), "Internet 100MB", 3500.00));
+		juan.getCuenta().AgregarServicio(new Servicio(LocalDate.of(2026, 7, 10), "Luz Eléctrica", 4500.50));
+		juan.getCuenta().AgregarServicio(new Servicio(LocalDate.of(2026, 7, 5), "Internet 300MB", 5800.00));
 
+		// Servicios de María (Mismos servicios pero distintos precios/vencimientos +
+		// Netflix)
+		maria.getCuenta().AgregarServicio(new Servicio(LocalDate.of(2026, 7, 12), "Luz Eléctrica", 6100.00));
+		maria.getCuenta().AgregarServicio(new Servicio(LocalDate.of(2026, 7, 8), "Internet 300MB", 4900.00));
+		maria.getCuenta().AgregarServicio(new Servicio(LocalDate.of(2026, 7, 22), "Suscripción Netflix", 1200.90));
 
-	    usuarios.add(juan);
-	    usuarios.add(maria);
-	    usuarios.add(lucas);
-	    usuarios.add(ana);
-	    
+		// Servicios de Lucas (Tiene Gas y un seguro alto)
+		lucas.getCuenta().AgregarServicio(new Servicio(LocalDate.of(2026, 7, 15), "Gas Natural", 3200.25));
+		lucas.getCuenta().AgregarServicio(new Servicio(LocalDate.of(2026, 7, 28), "Seguro del Hogar", 7500.00));
+
+		// Servicios de Ana (Tiene un combo completo pero ajustado a su presupuesto)
+		ana.getCuenta().AgregarServicio(new Servicio(LocalDate.of(2026, 7, 10), "Luz Eléctrica", 3800.00));
+		ana.getCuenta().AgregarServicio(new Servicio(LocalDate.of(2026, 7, 15), "Agua Corriente", 1800.00));
+		ana.getCuenta().AgregarServicio(new Servicio(LocalDate.of(2026, 7, 5), "Internet 100MB", 3500.00));
+
+		usuarios.add(juan);
+		usuarios.add(maria);
+		usuarios.add(lucas);
+		usuarios.add(ana);
+
 		for (Usuario usuario : usuarios) {
 			Usuario.AgregarUsuario(usuario);
 			if (usuario instanceof Cliente) {
 				Cuenta.SolicitarTarjetaDebito((Cliente) usuario);
 			}
 		}
-		
+
 	}
 
 	private static String ValidarDni() {

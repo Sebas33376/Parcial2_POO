@@ -1,7 +1,6 @@
 package parcial2;
 
 import java.util.LinkedList;
-
 import javax.swing.JOptionPane;
 
 public class Usuario {
@@ -178,6 +177,7 @@ public class Usuario {
 
 		return input;
 	}
+	
 
 	public String getNombre() {
 		return nombre;
