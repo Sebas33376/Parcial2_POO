@@ -53,7 +53,7 @@ public class Main {
 				usuario = new Cliente();
 				Usuario.AgregarUsuario(usuario);
 				Cuenta.SolicitarTarjetaDebito((Cliente) usuario);
-				// JOptionPane.showMessageDialog(null, usuario);
+				
 				break;
 
 			}
