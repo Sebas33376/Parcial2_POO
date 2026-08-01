@@ -227,6 +227,11 @@ public class Usuario {
 		this.dni = dni;
 	}
 
+	public String MostrarDatos() {
+		return "Nombre: " + nombre + "\nApellido: " + apellido + "\nUsername: " + username + "\nEmail: " + email
+				+ "\nContrasena: " + contrasena + "\nDNI: " + dni + "\n";
+	}
+	
 	@Override
 	public String toString() {
 		return "Nombre: " + nombre + "\nApellido: " + apellido + "\nUsername: " + username + "\nEmail: " + email

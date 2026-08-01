@@ -56,94 +56,91 @@ public class Main {
 				break;
 
 			}
-			if (usuario instanceof Cliente) {
-				Home(usuario);
 
-			} else {
-				Admin(usuario);
-			}
+			Home(usuario);
 
 		} while (opcion != 2);
 
 	}
 
 	public static void Admin(Usuario usuario) {
-		String[] opciones = { "Ver clientes", "Eliminar clientes", "Cerrar Sesión" };
 
-		int opcion;
-
-		do {
-			Empleado empleado = (Empleado) usuario;
-
-			opcion = JOptionPane.showOptionDialog(null, null, "Bienvenido " + empleado.getNombre(), 0, -1, null,
-					opciones, opciones[5]);
-
-			switch (opcion) {
-
-			case 0:
-
-				break;
-			case 1:
-
-				break;
-			case 2:
-
-				break;
-			case 3:
-
-				break;
-			case 4:
-
-				break;
-			case 5:
-
-				break;
-
-			}
-
-		} while (opcion != 6);
 	}
 
 	public static void Home(Usuario usuario) {
 
-		String[] opciones = { "Ingresar dinero", "Transferir dinero", "Retirar dinero", "Movimientos", "Mis datos",
-				"Pagar servicios", "Cerrar Sesión" };
+		String[] opcionesEmpleado = { "Ver clientes", "Eliminar cliente", "Cerrar Sesión" };
+
+		String[] opcionesCliente = { "Ingresar dinero", "Transferir dinero", "Retirar dinero", "Movimientos",
+				"Mis datos", "Pagar servicios", "Cerrar Sesión" };
 
 		int opcion;
 
-		do {
-			Cliente cliente = (Cliente) usuario;
+		if (usuario instanceof Empleado) {
 
-			opcion = JOptionPane.showOptionDialog(null,
-					"Saldo: $" + String.format("%.2f", cliente.getCuenta().getSaldo()),
-					"Bienvenido " + usuario.getNombre(), 0, -1, null, opciones, opciones[5]);
+			do {
+				Empleado empleado = (Empleado) usuario;
 
-			switch (opcion) {
+				opcion = JOptionPane.showOptionDialog(null, "Admin " + empleado.getNombre(), "Administrador ", 0, -1, null,
+						opcionesEmpleado, opcionesEmpleado[2]);
 
-			case 0:
-				cliente.getCuenta().IngresarDinero();
-				break;
-			case 1:
-				TransferirDinero(cliente);
-				break;
-			case 2:
-				double monto = Double.parseDouble(validarNumero("Ingrese el monto que quiere retirar:"));
-				cliente.getCuenta().GenerarOrdenRetiro(ValidarDni(), monto);
+				switch (opcion) {
 
-				break;
-			case 3:
-				JOptionPane.showMessageDialog(null, cliente.getCuenta().MostrarMovimientos());
-				break;
-			case 4:
-				JOptionPane.showMessageDialog(null, cliente);
-				break;
-			case 5:
-				MostrarServicios(cliente.getCuenta());
-				break;
+				case 0:
+					empleado.MostrarListaClientes();
+					break;
+				case 1:
+					
+					Object seleccion = JOptionPane.showInputDialog(null, "Seleccione un dni de cliente para eliminar: ", "Eliminar cliente",
+							JOptionPane.QUESTION_MESSAGE, null, empleado.getListaClientes().toArray(), empleado.getListaClientes().get(0));
+					
+					Usuario cliente = (Usuario) seleccion;
+					
+                    empleado.eliminarCliente(cliente);
+                    JOptionPane.showMessageDialog(null, cliente);
+                    
+					break;
+				}
 
-			}
+			} while (opcion != 2);
 
-		} while (opcion != 6);
+		} else {
+
+			do {
+				Cliente cliente = (Cliente) usuario;
+
+				opcion = JOptionPane.showOptionDialog(null,
+						"Saldo: $" + String.format("%.2f", cliente.getCuenta().getSaldo()),
+						"Bienvenido " + usuario.getNombre(), 0, -1, null, opcionesCliente, opcionesCliente[5]);
+
+				switch (opcion) {
+
+				case 0:
+					cliente.getCuenta().IngresarDinero();
+					break;
+				case 1:
+					TransferirDinero(cliente);
+					break;
+				case 2:
+					double monto = Double.parseDouble(validarNumero("Ingrese el monto que quiere retirar:"));
+					cliente.getCuenta().GenerarOrdenRetiro(ValidarDni(), monto);
+
+					break;
+				case 3:
+					JOptionPane.showMessageDialog(null, cliente.getCuenta().MostrarMovimientos());
+					break;
+				case 4:
+					JOptionPane.showMessageDialog(null, cliente);
+					break;
+				case 5:
+					MostrarServicios(cliente.getCuenta());
+					break;
+
+				}
+
+			} while (opcion != 6);
+		}
+
 	}
 
 	public static void MostrarServicios(Cuenta cuenta) {
@@ -225,6 +222,17 @@ public class Main {
 //			}
 //		}
 
+		// Empleados
+
+		Empleado carlos = new Empleado("Carlos", "Gómez", "admin", "admin@empresa.com", "Admin123!", "32111222");
+		Empleado sofia = new Empleado("Sofía", "Martínez", "smartinez", "sofia.martinez@empresa.com", "ClaveSegura89!",
+				"35444333");
+		Empleado diego = new Empleado("Diego", "Fernández", "dfernandez", "diego.fernandez@empresa.com", "AdminPass123",
+				"39888777");
+		Empleado laura = new Empleado("Laura", "Ríos", "lrios", "laura.rios@empresa.com", "LauraPass2026", "36555444");
+
+		// Clientes
+
 		Cliente juan = new Cliente("Juan", "Pérez", "juanp89", "juan.perez@email.com", "Clave123!", "38444555",
 				TipoDeCuenta.CAJA_AHORRO, "1234", 350000.64);
 
@@ -259,6 +267,10 @@ public class Main {
 		usuarios.add(maria);
 		usuarios.add(lucas);
 		usuarios.add(ana);
+		usuarios.add(carlos);
+		usuarios.add(sofia);
+		usuarios.add(diego);
+		usuarios.add(laura);
 
 		for (Usuario usuario : usuarios) {
 			Usuario.AgregarUsuario(usuario);
